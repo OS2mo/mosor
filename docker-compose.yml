@@ -1,0 +1,36 @@
+# SPDX-FileCopyrightText: Magenta ApS <https://magenta.dk>
+# SPDX-License-Identifier: MPL-2.0
+---
+services:
+  mo-sor:
+    build: .
+    command: ["uvicorn", "--factory", "mo_sor.app:create_app", "--host", "0.0.0.0", "--reload"]
+    environment:
+      FASTRAMQPI__LOG_LEVEL: "INFO"
+      FASTRAMQPI__JSON_LOGS: "false"
+
+      # OS2mo
+      FASTRAMQPI__MO_URL: "http://mo:5000"
+      FASTRAMQPI__CLIENT_ID: "dipex"
+      FASTRAMQPI__CLIENT_SECRET: "603f1c82-d012-4d04-9382-dbe659c533fb"
+      FASTRAMQPI__AUTH_SERVER: "http://keycloak:8080/auth"
+      FASTRAMQPI__AUTH_REALM: "mo"
+      # The MO AMQP system is no longer used for events (replaced by the GraphQL
+      # event system), but FastRAMQPI's integration-test fixtures still require
+      # AMQP connection settings to be present.
+      FASTRAMQPI__AMQP__URL: "amqp://guest:guest@msg-broker:5672/"
+
+    networks:
+      - default
+      - os2mo_default
+    volumes:
+      - ./mo_sor/:/app/mo_sor/:ro
+      - ./tests/:/app/tests/:ro
+    tmpfs:
+      - /app/.pytest_cache/
+    ports:
+      - 127.0.0.1:8000:8000
+
+networks:
+  os2mo_default:
+    external: true
