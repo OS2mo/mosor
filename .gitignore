@@ -1,0 +1,19 @@
+# SPDX-FileCopyrightText: Magenta ApS <https://magenta.dk>
+# SPDX-License-Identifier: MPL-2.0
+__pycache__/
+.venv/
+.env
+
+# Tool caches
+# CI keeps the pip, poetry and pre-commit caches here; deptry skips ignored files
+.cache/
+.mypy_cache/
+.pytest_cache/
+.ruff_cache/
+
+# Coverage
+.coverage
+.coverage.*
+
+# Local overrides
+docker-compose.override.yml
