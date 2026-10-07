@@ -1,6 +1,9 @@
+from .acknowledge_event import AcknowledgeEvent
 from .async_base_client import AsyncBaseClient
 from .base_model import BaseModel
 from .client import GraphQLClient
+from .declare_event_listener import DeclareEventListener
+from .declare_event_listener import DeclareEventListenerEventListenerDeclare
 from .enums import AccessLogModel
 from .enums import Collection
 from .enums import FileStore
@@ -14,6 +17,8 @@ from .exceptions import GraphQLClientGraphQLError
 from .exceptions import GraphQLClientGraphQLMultiError
 from .exceptions import GraphQLClientHttpError
 from .exceptions import GraphQlClientInvalidResponseError
+from .fetch_event import FetchEvent
+from .fetch_event import FetchEventEventFetch
 from .get_org_unit import GetOrgUnit
 from .get_org_unit import GetOrgUnitOrgUnits
 from .get_org_unit import GetOrgUnitOrgUnitsObjects
@@ -159,16 +164,21 @@ from .input_types import UuidsBoundITUserFilter
 from .input_types import UuidsBoundLeaveFilter
 from .input_types import UuidsBoundOrganisationUnitFilter
 from .input_types import ValidityInput
+from .list_events import ListEvents
+from .list_events import ListEventsEvents
+from .list_events import ListEventsEventsObjects
 from .list_files import ListFiles
 from .list_files import ListFilesFiles
 from .list_files import ListFilesFilesObjects
 from .read_file import ReadFile
 from .read_file import ReadFileFiles
 from .read_file import ReadFileFilesObjects
+from .send_event import SendEvent
 
 __all__ = [
     "AccessLogFilter",
     "AccessLogModel",
+    "AcknowledgeEvent",
     "ActorFilter",
     "AddressCreateInput",
     "AddressFilter",
@@ -189,6 +199,8 @@ __all__ = [
     "ClassTerminateInput",
     "ClassUpdateInput",
     "Collection",
+    "DeclareEventListener",
+    "DeclareEventListenerEventListenerDeclare",
     "DescendantParentBoundOrganisationUnitFilter",
     "EmployeeBoundAddressFilter",
     "EmployeeBoundAssociationFilter",
@@ -221,6 +233,8 @@ __all__ = [
     "FacetRegistrationFilter",
     "FacetTerminateInput",
     "FacetUpdateInput",
+    "FetchEvent",
+    "FetchEventEventFetch",
     "FileFilter",
     "FileStore",
     "FullEventFilter",
@@ -263,6 +277,9 @@ __all__ = [
     "LeaveRegistrationFilter",
     "LeaveTerminateInput",
     "LeaveUpdateInput",
+    "ListEvents",
+    "ListEventsEvents",
+    "ListEventsEventsObjects",
     "ListFiles",
     "ListFilesFiles",
     "ListFilesFilesObjects",
@@ -325,6 +342,7 @@ __all__ = [
     "RoleBindingTerminateInput",
     "RoleBindingUpdateInput",
     "RoleRegistrationFilter",
+    "SendEvent",
     "UuidsBoundClassFilter",
     "UuidsBoundEmployeeFilter",
     "UuidsBoundEngagementFilter",

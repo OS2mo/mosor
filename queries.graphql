@@ -28,3 +28,32 @@ query ReadFile($file_store: FileStore!, $file_name: String!) {
     }
   }
 }
+
+mutation SendEvent($input: EventSendInput!) {
+  event_send(input: $input)
+}
+
+mutation DeclareEventListener($input: ListenerCreateInput!) {
+  event_listener_declare(input: $input) {
+    uuid
+  }
+}
+
+query ListEvents($listener: UUID!) {
+  events(filter: {listeners: {uuids: [$listener]}}) {
+    objects {
+      subject
+    }
+  }
+}
+
+query FetchEvent($listener: UUID!) {
+  event_fetch(filter: {listener: $listener}) {
+    token
+    subject
+  }
+}
+
+mutation AcknowledgeEvent($token: EventToken!) {
+  event_acknowledge(input: {token: $token})
+}
