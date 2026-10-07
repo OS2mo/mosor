@@ -1,7 +1,6 @@
 # SPDX-FileCopyrightText: Magenta ApS <https://magenta.dk>
 # SPDX-License-Identifier: MPL-2.0
 
-
 query GetOrgUnit($uuid: UUID!) {
   org_units(filter: {uuids: [$uuid]}) {
     objects {
@@ -10,6 +9,22 @@ query GetOrgUnit($uuid: UUID!) {
         user_key
         name
       }
+    }
+  }
+}
+
+query ListFiles($file_store: FileStore!) {
+  files(filter: {file_store: $file_store}) {
+    objects {
+      file_name
+    }
+  }
+}
+
+query ReadFile($file_store: FileStore!, $file_name: String!) {
+  files(filter: {file_store: $file_store, file_names: [$file_name]}) {
+    objects {
+      text_contents
     }
   }
 }
