@@ -17,6 +17,22 @@ options (MO URL, authentication, logging, etc.) are nested under `FASTRAMQPI`
 and set using `__` as delimiter, e.g. `FASTRAMQPI__MO_URL`. See
 [docker-compose.yml](docker-compose.yml) for a working example.
 
+### Ingest
+A supplier uploads dumps of SOR to MO's `EXPORTS` file store, with the dump
+date in the file name (`SOR_FILE_PATTERN`). A cron job calls `POST /ingest`,
+which compares the newest dump to the last ingested one and sends a `sor/unit`
+event for every SOR code that was added, changed or removed. Dumps in between
+are skipped. The first ingest sends every unit in the newest dump.
+
+Each dump has a single root row, the region (`SOR_ROOT_CODE`), which
+becomes the root unit in MO, named `SOR_ROOT_NAME` (default `SOR`). A dump
+with any other root is rejected.
+
+A newest dump that is invalid is not ingested, and an error is logged. Neither
+is one that removes more than `SOR_MAX_TERMINATIONS` units, unless you call
+`POST /ingest?force=true`. Call `POST /ingest?dry_run=true` to see what would
+be ingested.
+
 
 ## Sundhedsvæsenets Organisationsregister (SOR)
 SOR registers organisation and address data, as well as location numbers, for
