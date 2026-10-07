@@ -143,6 +143,20 @@ def test_names_and_codes_are_stripped() -> None:
             id="code-in-scientific-notation",
         ),
         pytest.param(
+            # GRANDCHILD as Excel saves it: Excel keeps 15 significant digits and
+            # zeroes the 16th. The code still has the right shape, so only the
+            # check digit catches it.
+            dump(row(ROOT), row(f"{GRANDCHILD[:-1]}0", ROOT, level=2)),
+            f"line 3: CodeSOR '{GRANDCHILD[:-1]}0': invalid check digit",
+            id="excel-zeroed-check-digit",
+        ),
+        pytest.param(
+            # ROOT with the last digit changed from 5 to 6, as the parent
+            dump(row(ROOT), row(CHILD, "1001000016006", level=2)),
+            "line 3: ParentCodeSOR '1001000016006': invalid check digit",
+            id="wrong-check-digit-in-parent",
+        ),
+        pytest.param(
             dump(row(ROOT), row("123", ROOT, level=2)),
             f"line 3: CodeSOR '123': {NOT_A_CODE}",
             id="code-too-short",
