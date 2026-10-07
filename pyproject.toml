@@ -14,6 +14,7 @@ structlog = "^25"
 uvicorn = "^0.34"
 fastramqpi = "^17"
 fastapi = "^0.115.0"
+async-lru = "^2"
 
 [tool.poetry.group.pre-commit.dependencies]
 mypy = "^2"
