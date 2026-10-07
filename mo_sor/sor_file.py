@@ -81,6 +81,8 @@ class SorUnit(BaseModel, frozen=True):
     name: str
     type: str
     level: int
+    # FromDate clamped to the parent's start, as MO rejects a unit that starts
+    # before its parent.
     start: date
 
     @property
@@ -173,14 +175,18 @@ def parse(text: str, root_code: str, root_name: str) -> dict[str, SorUnit]:
     rows = _read_rows(text)
     _check_tree(rows, root_code)
 
-    return {
-        row.code: SorUnit(
+    # Top-down, so each parent's start is known before its children's
+    units: dict[str, SorUnit] = {}
+    for row in sorted(rows.values(), key=lambda r: r.level):
+        start = row.from_date
+        if row.parent_code is not None:
+            start = max(start, units[row.parent_code].start)
+        units[row.code] = SorUnit(
             code=row.code,
             parent_code=row.parent_code,
             name=root_name if row.code == root_code else row.name,
             type=row.type,
             level=row.level,
-            start=row.from_date,
+            start=start,
         )
-        for row in rows.values()
-    }
+    return units

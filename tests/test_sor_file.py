@@ -72,7 +72,7 @@ def test_parse() -> None:
             name="Afdeling",
             type="klinisk enhed",
             level=3,
-            start=date(2015, 7, 30),
+            start=date(2020, 1, 1),
         ),
     }
 
@@ -93,6 +93,25 @@ def test_uuids_match_the_importer() -> None:
     assert units[CHILD].uuid == code_to_uuid(CHILD)
     assert units[CHILD].parent_uuid == code_to_uuid(ROOT)
     assert units[ROOT].parent_uuid is None
+
+
+def test_start_is_clamped_to_parent_start() -> None:
+    """MO rejects a unit that starts before its parent.
+
+    The clamp carries down the tree: the grandchild starts no earlier than the
+    child's clamped start.
+    """
+    units = parse_dump(
+        tree(root_from="20150730", child_from="20250109", grandchild_from="20150730")
+    )
+    assert units[ROOT].start == date(2015, 7, 30)
+    assert units[CHILD].start == date(2025, 1, 9)
+    assert units[GRANDCHILD].start == date(2025, 1, 9)
+
+
+def test_start_after_parent_is_kept() -> None:
+    units = parse_dump(tree(grandchild_from="20260501"))
+    assert units[GRANDCHILD].start == date(2026, 5, 1)
 
 
 def test_rows_in_any_order() -> None:
