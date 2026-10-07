@@ -20,6 +20,10 @@ services:
       # AMQP connection settings to be present.
       FASTRAMQPI__AMQP__URL: "amqp://guest:guest@msg-broker:5672/"
 
+      # SOR
+      SOR_FILE_PATTERN: "SOR_Region_%d%m%y.csv"
+      SOR_ROOT_CODE: "1001000016005"
+
       # Database
       FASTRAMQPI__DATABASE__USER: "fastramqpi"
       FASTRAMQPI__DATABASE__PASSWORD: "fastramqpi"

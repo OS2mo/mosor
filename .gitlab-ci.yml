@@ -84,5 +84,7 @@ Integration-test:
     - .integration-test:mo
   variables:
     FASTRAMQPI__JSON_LOGS: "False"
+    SOR_FILE_PATTERN: "SOR_Region_%d%m%y.csv"
+    SOR_ROOT_CODE: "1001000016005"
   rules:
     - <<: *if-merge-request
